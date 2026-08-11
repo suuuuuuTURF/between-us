@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Your Room Is Ready — Between Us</title>
+
+    <meta
+        name="description"
+        content="Your private Between Us listening room is ready."
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <!-- Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================================
+         NAVIGATION
+    ================================================== -->
+
+    <header class="navbar">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            Between Us <span>♡</span>
+        </a>
+
+
+        <a
+            href="how-it-works.html"
+            class="nav-link"
+        >
+            How it works
+        </a>
+
+    </header>
+
+
+
+    <!-- =================================================
+         ROOM CREATED
+    ================================================== -->
+
+    <main class="room-created-page">
+
+        <section class="room-created-card">
+
+
+            <!-- HEADING -->
+
+            <p class="eyebrow">
+                YOUR ROOM IS READY
+            </p>
+
+
+            <h1>
+
+                Welcome to
+
+                <span id="displayRoomName">
+                    Your Room
+                </span>
+
+            </h1>
+
+
+            <p class="room-description">
+
+                Your private listening room
+                is ready.
+
+                Send the code or link to the
+                person you want to listen with.
+
+            </p>
+
+
+
+            <!-- =================================================
+                 ROOM CODE
+            ================================================== -->
+
+            <div class="code-section">
+
+                <p class="code-label">
+                    ROOM CODE
+                </p>
+
+
+                <div
+                    class="room-code"
+                    id="roomCode"
+                >
+                    ------
+                </div>
+
+
+                <button
+                    type="button"
+                    class="copy-button"
+                    id="copyCodeButton"
+                >
+                    Copy Code
+                </button>
+
+
+                <p
+                    class="copy-message"
+                    id="copyMessage"
+                ></p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SHARE LINK
+            ================================================== -->
+
+            <div class="share-section">
+
+                <p class="code-label">
+                    SHARE LINK
+                </p>
+
+
+                <div class="share-link-box">
+
+                    <span id="shareLink">
+                        Creating your link...
+                    </span>
+
+
+                    <button
+                        type="button"
+                        id="copyLinkButton"
+                        class="link-copy"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ENTER ROOM
+            ================================================= -->
+
+            <a
+                href="#"
+                id="enterRoomButton"
+                class="btn btn-primary enter-room-button"
+            >
+                Enter Room
+            </a>
+
+
+
+            <!-- BACK HOME -->
+
+            <a
+                href="index.html"
+                class="back-link"
+            >
+                ← Back home
+            </a>
+
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =================================================
+         APP
+    ================================================== -->
+
+    <script src="app.js"></script>
+
+
+    <!-- =================================================
+         ENTER ROOM URL
+    ================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            () => {
+
+                const params =
+                    new URLSearchParams(
+                        window.location.search
+                    );
+
+
+                const roomCode =
+                    params.get("code");
+
+
+                const enterButton =
+                    document.getElementById(
+                        "enterRoomButton"
+                    );
+
+
+                if (
+                    enterButton &&
+                    roomCode
+                ) {
+
+                    enterButton.href =
+                        "room.html?code=" +
+                        encodeURIComponent(
+                            roomCode
+                        );
+
+                }
+
+
+                /*
+                 * Safety check:
+                 * If there is no room code, don't
+                 * allow the button to silently open
+                 * a broken room page.
+                 */
+
+                if (
+                    enterButton &&
+                    !roomCode
+                ) {
+
+                    enterButton.addEventListener(
+                        "click",
+                        (event) => {
+
+                            event.preventDefault();
+
+
+                            alert(
+                                "Room code is missing. Please create the room again."
+                            );
+
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

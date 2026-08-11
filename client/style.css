@@ -1,0 +1,3859 @@
+:root {
+
+    --coffee-dark: #211714;
+    --coffee: #30211c;
+    --coffee-light: #3a2922;
+
+    --burgundy: #6b3038;
+    --burgundy-light: #81434a;
+
+    --cream: #f1e3d0;
+    --cream-muted: #b9a493;
+
+    --gold: #c6a66b;
+
+    --border: rgba(198, 166, 107, 0.25);
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 15% 25%,
+            rgba(129, 67, 74, 0.18),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 85% 30%,
+            rgba(198, 166, 107, 0.08),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(107, 48, 56, 0.15),
+            transparent 35%
+        ),
+
+        var(--coffee-dark);
+
+    color: var(--cream);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   STAR / DUST EFFECT
+========================= */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.18;
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(241, 227, 208, 0.8) 1px,
+            transparent 1px
+        );
+
+    background-size: 95px 95px;
+
+    z-index: 0;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+
+    height: 78px;
+
+    padding: 0 6%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--border);
+
+    background:
+        rgba(25, 16, 13, 0.72);
+
+    backdrop-filter: blur(12px);
+
+    position: relative;
+
+    z-index: 10;
+}
+
+
+/* LOGO */
+
+.logo {
+
+    color: var(--gold);
+
+    text-decoration: none;
+
+    font-size: 29px;
+
+    font-style: italic;
+
+    letter-spacing: -0.5px;
+
+    transition: 0.3s ease;
+}
+
+
+.logo span {
+
+    color: var(--burgundy-light);
+
+    font-size: 25px;
+
+    margin-left: 4px;
+}
+
+
+.logo:hover {
+
+    color: var(--cream);
+}
+
+
+/* NAV LINK */
+
+.nav-link {
+
+    color: var(--cream-muted);
+
+    text-decoration: none;
+
+    font-size: 16px;
+
+    position: relative;
+
+    transition: 0.3s ease;
+}
+
+
+.nav-link::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    bottom: -7px;
+
+    width: 0;
+
+    height: 1px;
+
+    background: var(--gold);
+
+    transition: 0.3s ease;
+}
+
+
+.nav-link:hover {
+
+    color: var(--cream);
+}
+
+
+.nav-link:hover::after {
+
+    width: 100%;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+
+    min-height: calc(100vh - 78px);
+
+    max-width: 1200px;
+
+    margin: auto;
+
+    padding: 70px 7%;
+
+    display: grid;
+
+    grid-template-columns: 1.1fr 0.9fr;
+
+    align-items: center;
+
+    gap: 50px;
+
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* =========================
+   HERO CONTENT
+========================= */
+
+.hero-content {
+
+    position: relative;
+
+    z-index: 3;
+}
+
+
+.eyebrow {
+
+    color: var(--burgundy-light);
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size: 12px;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 24px;
+}
+
+
+h1 {
+
+    font-size: clamp(
+        58px,
+        7vw,
+        92px
+    );
+
+    font-weight: 400;
+
+    line-height: 0.95;
+
+    letter-spacing: -3px;
+
+    color: var(--cream);
+
+    margin-bottom: 25px;
+}
+
+
+h1 span {
+
+    display: block;
+
+    color: var(--gold);
+
+    font-size: 0.58em;
+
+    font-style: italic;
+
+    margin-top: 18px;
+
+    letter-spacing: -1px;
+}
+
+
+.hero-description {
+
+    max-width: 540px;
+
+    color: var(--cream-muted);
+
+    font-size: 18px;
+
+    line-height: 1.8;
+
+    margin-bottom: 38px;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.hero-buttons {
+
+    display: flex;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+}
+
+
+.btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 165px;
+
+    padding: 15px 24px;
+
+    border-radius: 13px;
+
+    text-decoration: none;
+
+    font-size: 16px;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+
+.btn:hover {
+
+    transform: translateY(-3px);
+}
+
+
+/* PRIMARY */
+
+.btn-primary {
+
+    color: var(--cream);
+
+    background: var(--burgundy);
+
+    border: 1px solid var(--burgundy-light);
+
+    box-shadow:
+        0 12px 35px
+        rgba(107, 48, 56, 0.28);
+}
+
+
+.btn-primary:hover {
+
+    background: var(--burgundy-light);
+
+    box-shadow:
+        0 16px 40px
+        rgba(107, 48, 56, 0.38);
+}
+
+
+/* SECONDARY */
+
+.btn-secondary {
+
+    color: var(--cream);
+
+    background: rgba(
+        48,
+        33,
+        28,
+        0.55
+    );
+
+    border: 1px solid var(--border);
+}
+
+
+.btn-secondary:hover {
+
+    border-color: var(--gold);
+
+    background: rgba(
+        58,
+        41,
+        34,
+        0.7
+    );
+}
+
+
+/* =========================
+   MUSIC DECORATION
+========================= */
+
+.music-decoration {
+
+    height: 480px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+}
+
+
+/* GLOW */
+
+.music-glow {
+
+    position: absolute;
+
+    width: 380px;
+
+    height: 380px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(129, 67, 74, 0.25),
+            transparent 68%
+        );
+
+    filter: blur(20px);
+
+    animation: breathe 5s ease-in-out infinite;
+}
+
+
+/* VINYL */
+
+.vinyl {
+
+    width: 330px;
+
+    height: 330px;
+
+    border-radius: 50%;
+
+    position: relative;
+
+    z-index: 2;
+
+    background:
+        repeating-radial-gradient(
+            circle,
+            #120d0b 0px,
+            #120d0b 3px,
+            #1e1512 4px,
+            #120d0b 6px
+        );
+
+    border:
+        1px solid
+        rgba(198, 166, 107, 0.28);
+
+    box-shadow:
+
+        0 30px 80px
+        rgba(0, 0, 0, 0.55),
+
+        0 0 80px
+        rgba(129, 67, 74, 0.18);
+
+    animation:
+        spin 18s linear infinite;
+}
+
+
+/* VINYL CENTER */
+
+.vinyl-center {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 50%;
+
+    transform: translate(
+        -50%,
+        -50%
+    );
+
+    width: 105px;
+
+    height: 105px;
+
+    border-radius: 50%;
+
+    display: grid;
+
+    place-items: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--burgundy-light),
+            var(--burgundy)
+        );
+
+    border:
+        1px solid
+        rgba(198, 166, 107, 0.5);
+
+    color: var(--gold);
+
+    font-size: 40px;
+
+    box-shadow:
+        0 0 35px
+        rgba(129, 67, 74, 0.35);
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.home-footer {
+
+    position: relative;
+
+    z-index: 2;
+
+    padding: 25px 20px 35px;
+
+    text-align: center;
+
+    color: var(--cream-muted);
+
+    font-size: 13px;
+
+    letter-spacing: 0.5px;
+}
+
+
+.footer-dot {
+
+    margin: 0 10px;
+
+    color: var(--gold);
+}
+
+
+.footer-heart {
+
+    margin-left: 8px;
+
+    color: var(--burgundy-light);
+
+    font-size: 18px;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+@keyframes breathe {
+
+    0%,
+    100% {
+
+        transform: scale(0.95);
+
+        opacity: 0.65;
+    }
+
+    50% {
+
+        transform: scale(1.08);
+
+        opacity: 1;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+    .navbar {
+
+        padding: 0 5%;
+
+    }
+
+
+    .hero {
+
+        min-height: auto;
+
+        padding:
+            75px 6%
+            50px;
+
+        grid-template-columns: 1fr;
+
+        text-align: center;
+
+    }
+
+
+    .hero-description {
+
+        margin-left: auto;
+
+        margin-right: auto;
+
+    }
+
+
+    .hero-buttons {
+
+        justify-content: center;
+
+    }
+
+
+    .music-decoration {
+
+        height: 360px;
+
+        order: 2;
+
+    }
+
+
+    .vinyl {
+
+        width: 270px;
+
+        height: 270px;
+
+    }
+
+
+    .music-glow {
+
+        width: 310px;
+
+        height: 310px;
+
+    }
+
+
+    h1 {
+
+        letter-spacing: -2px;
+
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .navbar {
+
+        height: 70px;
+
+    }
+
+
+    .logo {
+
+        font-size: 24px;
+
+    }
+
+
+    .nav-link {
+
+        font-size: 14px;
+
+    }
+
+
+    .hero {
+
+        padding-top: 55px;
+
+    }
+
+
+    .eyebrow {
+
+        font-size: 10px;
+
+        letter-spacing: 2px;
+
+    }
+
+
+    h1 {
+
+        font-size: 55px;
+
+    }
+
+
+    .hero-description {
+
+        font-size: 16px;
+
+    }
+
+
+    .btn {
+
+        width: 100%;
+
+    }
+
+
+    .hero-buttons {
+
+        width: 100%;
+
+        max-width: 320px;
+
+        margin: auto;
+
+    }
+
+
+    .music-decoration {
+
+        height: 300px;
+
+    }
+
+
+    .vinyl {
+
+        width: 225px;
+
+        height: 225px;
+
+    }
+
+
+    .vinyl-center {
+
+        width: 75px;
+
+        height: 75px;
+
+        font-size: 28px;
+
+    }
+
+}
+/* =====================================================
+   HOW IT WORKS PAGE
+===================================================== */
+
+
+.how-page {
+
+    max-width: 1050px;
+
+    margin: auto;
+
+    padding: 80px 7% 100px;
+
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+
+.how-hero {
+
+    max-width: 720px;
+
+    margin: 0 auto 90px;
+
+    text-align: center;
+}
+
+
+.how-hero h1 {
+
+    margin-bottom: 30px;
+
+}
+
+
+.how-hero h1 span {
+
+    display: block;
+
+    color: var(--gold);
+
+    font-size: 0.62em;
+
+    font-style: italic;
+
+    margin-top: 15px;
+
+}
+
+
+.how-intro {
+
+    max-width: 610px;
+
+    margin: auto;
+
+    color: var(--cream-muted);
+
+    font-size: 18px;
+
+    line-height: 1.8;
+
+}
+
+
+/* =========================
+   ACTIVE NAV
+========================= */
+
+
+.active-link {
+
+    color: var(--cream);
+
+}
+
+
+.active-link::after {
+
+    width: 100%;
+
+}
+
+
+/* =========================
+   STEPS
+========================= */
+
+
+.steps {
+
+    max-width: 850px;
+
+    margin: auto;
+
+}
+
+
+.step {
+
+    display: grid;
+
+    grid-template-columns: 100px 1fr;
+
+    gap: 40px;
+
+    padding: 55px 0;
+
+    border-top: 1px solid var(--border);
+
+    position: relative;
+
+}
+
+
+.step:last-child {
+
+    border-bottom: 1px solid var(--border);
+
+}
+
+
+/* NUMBER */
+
+
+.step-number {
+
+    width: 64px;
+
+    height: 64px;
+
+    border-radius: 50%;
+
+    display: grid;
+
+    place-items: center;
+
+    background:
+        rgba(107, 48, 56, 0.7);
+
+    border:
+        1px solid
+        var(--burgundy-light);
+
+    color: var(--gold);
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size: 14px;
+
+    letter-spacing: 1px;
+
+    box-shadow:
+        0 10px 30px
+        rgba(107, 48, 56, 0.18);
+
+}
+
+
+/* CONTENT */
+
+
+.step-label {
+
+    color: var(--burgundy-light);
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 12px;
+
+}
+
+
+.step-content h2 {
+
+    font-size: 36px;
+
+    font-weight: 400;
+
+    margin-bottom: 14px;
+
+    color: var(--cream);
+
+}
+
+
+.step-content > p:last-child {
+
+    max-width: 610px;
+
+    color: var(--cream-muted);
+
+    font-size: 17px;
+
+    line-height: 1.8;
+
+}
+
+
+/* =========================
+   ENDING
+========================= */
+
+
+.how-ending {
+
+    text-align: center;
+
+    padding: 110px 20px 40px;
+
+}
+
+
+.how-ending > p {
+
+    color: var(--burgundy-light);
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+    font-size: 11px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.how-ending h2 {
+
+    font-size: 48px;
+
+    font-weight: 400;
+
+    line-height: 1.15;
+
+    margin-bottom: 35px;
+
+}
+
+
+.how-ending h2 span {
+
+    display: block;
+
+    color: var(--gold);
+
+    font-style: italic;
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+
+@media (max-width: 700px) {
+
+
+    .how-page {
+
+        padding:
+            60px 6%
+            70px;
+
+    }
+
+
+    .how-hero {
+
+        margin-bottom: 55px;
+
+    }
+
+
+    .how-hero h1 {
+
+        font-size: 60px;
+
+    }
+
+
+    .how-intro {
+
+        font-size: 16px;
+
+    }
+
+
+    .step {
+
+        grid-template-columns: 1fr;
+
+        gap: 22px;
+
+        padding: 40px 0;
+
+    }
+
+
+    .step-number {
+
+        width: 54px;
+
+        height: 54px;
+
+    }
+
+
+    .step-content h2 {
+
+        font-size: 30px;
+
+    }
+
+
+    .step-content > p:last-child {
+
+        font-size: 16px;
+
+    }
+
+
+    .how-ending {
+
+        padding-top: 75px;
+
+    }
+
+
+    .how-ending h2 {
+
+        font-size: 40px;
+
+    }
+
+}
+/* =====================================================
+   CREATE ROOM PAGE
+===================================================== */
+
+
+.create-page {
+
+    min-height:
+        calc(100vh - 78px);
+
+    display: grid;
+
+    place-items: center;
+
+    padding:
+        60px 20px 80px;
+
+    position: relative;
+
+    z-index: 1;
+
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+
+.create-card {
+
+    width: 100%;
+
+    max-width: 570px;
+
+    padding: 48px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(58, 41, 34, 0.78),
+            rgba(36, 25, 22, 0.78)
+        );
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.28);
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+
+/* subtle burgundy glow */
+
+.create-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 230px;
+
+    height: 230px;
+
+    border-radius: 50%;
+
+    top: -130px;
+
+    right: -100px;
+
+    background:
+        rgba(129, 67, 74, 0.18);
+
+    filter: blur(20px);
+
+    pointer-events: none;
+
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+
+.create-heading {
+
+    position: relative;
+
+    z-index: 1;
+
+    margin-bottom: 38px;
+
+}
+
+
+.create-heading h1 {
+
+    font-size: 58px;
+
+    line-height: 0.95;
+
+    font-weight: 400;
+
+    letter-spacing: -2px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.create-heading h1 span {
+
+    display: block;
+
+    color: var(--gold);
+
+    font-style: italic;
+
+    font-size: 0.75em;
+
+    margin-top: 8px;
+
+}
+
+
+.create-heading > p:last-child {
+
+    color: var(--cream-muted);
+
+    font-size: 16px;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+
+.room-form {
+
+    position: relative;
+
+    z-index: 1;
+
+}
+
+
+.form-group {
+
+    margin-bottom: 24px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    color: var(--cream);
+
+    font-size: 14px;
+
+    margin-bottom: 9px;
+
+}
+
+
+.form-group input {
+
+    width: 100%;
+
+    height: 54px;
+
+    padding:
+        0 17px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 13px;
+
+    outline: none;
+
+    background:
+        rgba(24, 17, 15, 0.75);
+
+    color: var(--cream);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 16px;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+
+}
+
+
+.form-group input::placeholder {
+
+    color:
+        rgba(185, 164, 147, 0.55);
+
+}
+
+
+.form-group input:focus {
+
+    border-color:
+        var(--gold);
+
+    background:
+        rgba(24, 17, 15, 0.95);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(198, 166, 107, 0.08);
+
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+
+.create-button {
+
+    width: 100%;
+
+    border: none;
+
+    margin-top: 7px;
+
+    cursor: pointer;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+}
+
+
+.create-button:hover {
+
+    border: none;
+
+}
+
+
+/* =========================
+   BACK LINK
+========================= */
+
+
+.back-link {
+
+    display: block;
+
+    width: fit-content;
+
+    margin:
+        28px auto 0;
+
+    color:
+        var(--cream-muted);
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    transition:
+        color 0.25s ease;
+
+}
+
+
+.back-link:hover {
+
+    color:
+        var(--gold);
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+
+@media (max-width: 600px) {
+
+    .create-page {
+
+        padding:
+            35px 16px 50px;
+
+    }
+
+
+    .create-card {
+
+        padding:
+            34px 24px;
+
+        border-radius: 23px;
+
+    }
+
+
+    .create-heading h1 {
+
+        font-size: 50px;
+
+    }
+
+
+    .form-group input {
+
+        height: 52px;
+
+    }
+
+}
+/* =====================================================
+   ROOM CREATED PAGE
+===================================================== */
+
+
+.room-created-page {
+
+    min-height:
+        calc(100vh - 78px);
+
+    display: grid;
+
+    place-items: center;
+
+    padding:
+        60px 20px 80px;
+
+    position: relative;
+
+    z-index: 1;
+
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+
+.room-created-card {
+
+    width: 100%;
+
+    max-width: 620px;
+
+    padding:
+        50px 45px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(58, 41, 34, 0.82),
+            rgba(36, 25, 22, 0.82)
+        );
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 30px 90px
+        rgba(0, 0, 0, 0.3);
+
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+
+.room-created-card h1 {
+
+    font-size: 48px;
+
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    letter-spacing: -1.5px;
+
+    margin:
+        12px 0 22px;
+
+}
+
+
+.room-created-card h1 span {
+
+    display: block;
+
+    color: var(--gold);
+
+    font-style: italic;
+
+    font-size: 0.72em;
+
+    margin-top: 10px;
+
+}
+
+
+.room-description {
+
+    max-width: 470px;
+
+    margin:
+        0 auto 38px;
+
+    color: var(--cream-muted);
+
+    font-size: 16px;
+
+    line-height: 1.75;
+
+}
+
+
+/* =========================
+   LABEL
+========================= */
+
+
+.code-label {
+
+    color:
+        var(--burgundy-light);
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 12px;
+
+}
+
+
+/* =========================
+   ROOM CODE
+========================= */
+
+
+.code-section {
+
+    padding:
+        25px 20px;
+
+    background:
+        rgba(24, 17, 15, 0.55);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 18px;
+
+}
+
+
+.room-code {
+
+    color: var(--gold);
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size: 34px;
+
+    font-weight: 700;
+
+    letter-spacing: 8px;
+
+    margin:
+        8px 0 18px;
+
+}
+
+
+/* =========================
+   COPY BUTTON
+========================= */
+
+
+.copy-button {
+
+    padding:
+        10px 18px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 10px;
+
+    background:
+        rgba(107, 48, 56, 0.35);
+
+    color:
+        var(--cream);
+
+    font-size: 14px;
+
+}
+
+
+.copy-button:hover {
+
+    border-color:
+        var(--gold);
+
+    background:
+        var(--burgundy);
+
+}
+
+
+.copy-message {
+
+    min-height: 18px;
+
+    margin-top: 10px;
+
+    color:
+        var(--gold);
+
+    font-size: 12px;
+
+}
+
+
+/* =========================
+   SHARE LINK
+========================= */
+
+
+.share-section {
+
+    margin-top: 25px;
+
+    text-align: left;
+
+}
+
+
+.share-link-box {
+
+    min-height: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        6px 7px 6px 16px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 13px;
+
+    background:
+        rgba(24, 17, 15, 0.65);
+
+}
+
+
+.share-link-box span {
+
+    flex: 1;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    color:
+        var(--cream-muted);
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size: 13px;
+
+}
+
+
+.link-copy {
+
+    padding:
+        9px 14px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================
+   ENTER ROOM
+========================= */
+
+
+.enter-room-button {
+
+    width: 100%;
+
+    margin-top: 30px;
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+
+@media (max-width: 600px) {
+
+    .room-created-page {
+
+        padding:
+            35px 16px 50px;
+
+    }
+
+
+    .room-created-card {
+
+        padding:
+            38px 22px;
+
+        border-radius: 23px;
+
+    }
+
+
+    .room-created-card h1 {
+
+        font-size: 40px;
+
+    }
+
+
+    .room-code {
+
+        font-size: 28px;
+
+        letter-spacing: 6px;
+
+    }
+
+
+    .share-link-box span {
+
+        font-size: 11px;
+
+    }
+
+}
+/* =====================================================
+   BETWEEN US — ROOM
+===================================================== */
+
+
+.room-page {
+
+    min-height:
+        calc(100vh - 78px);
+
+    padding:
+        45px 20px 70px;
+
+    position: relative;
+
+    z-index: 1;
+
+}
+
+
+.room-container {
+
+    width: 100%;
+
+    max-width: 1050px;
+
+    margin: 0 auto;
+
+}
+
+
+/* =====================================================
+   ROOM HEADER
+===================================================== */
+
+
+.room-header {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.room-header h1 {
+
+    margin: 10px 0 0;
+
+    font-size: 46px;
+
+    font-weight: 400;
+
+    letter-spacing: -1px;
+
+}
+
+
+.room-code-display {
+
+    min-width: 145px;
+
+    padding:
+        13px 18px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 14px;
+
+    background:
+        rgba(35, 24, 21, 0.72);
+
+    text-align: center;
+
+}
+
+
+.room-code-display span {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color:
+        var(--cream-muted);
+
+}
+
+
+.room-code-display strong {
+
+    color:
+        var(--gold);
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size: 18px;
+
+    letter-spacing: 4px;
+
+}
+
+
+/* =====================================================
+   PEOPLE
+===================================================== */
+
+
+.people-card {
+
+    padding:
+        20px 24px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 20px;
+
+    background:
+        rgba(35, 24, 21, 0.62);
+
+    margin-bottom: 25px;
+
+}
+
+
+.people-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size: 10px;
+
+    letter-spacing: 2.5px;
+
+    color:
+        var(--cream-muted);
+
+}
+
+
+.room-status {
+
+    letter-spacing: 0;
+
+    font-size: 12px;
+
+    color:
+        var(--gold);
+
+}
+
+
+.people-list {
+
+    display: flex;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.person {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding:
+        10px 15px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 50px;
+
+    background:
+        rgba(20, 14, 13, 0.5);
+
+}
+
+
+.person-avatar {
+
+    width: 34px;
+
+    height: 34px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background:
+        var(--burgundy);
+
+    color:
+        var(--cream);
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size: 13px;
+
+}
+
+
+.person-name {
+
+    color:
+        var(--cream);
+
+    font-size: 14px;
+
+}
+
+
+/* =====================================================
+   MUSIC AREA
+===================================================== */
+
+
+.music-area {
+
+    min-height: 480px;
+
+    display: grid;
+
+    place-items: center;
+
+    padding: 30px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(55, 38, 31, 0.76),
+            rgba(29, 20, 18, 0.84)
+        );
+
+    box-shadow:
+        0 25px 80px
+        rgba(0, 0, 0, 0.22);
+
+}
+
+
+.music-placeholder {
+
+    text-align: center;
+
+}
+
+
+.music-icon {
+
+    width: 90px;
+
+    height: 90px;
+
+    display: grid;
+
+    place-items: center;
+
+    margin: 0 auto 24px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        var(--border);
+
+    background:
+        rgba(107, 48, 56, 0.28);
+
+    color:
+        var(--gold);
+
+    font-size: 38px;
+
+}
+
+
+.music-placeholder h2 {
+
+    margin-bottom: 10px;
+
+    font-size: 30px;
+
+    font-weight: 400;
+
+}
+
+
+.music-placeholder p {
+
+    margin: 0;
+
+    color:
+        var(--cream-muted);
+
+    font-size: 15px;
+
+}
+
+
+/* =====================================================
+   ROOM MESSAGE
+===================================================== */
+
+
+.room-message {
+
+    min-height: 24px;
+
+    margin-top: 15px;
+
+    text-align: center;
+
+    color:
+        var(--cream-muted);
+
+    font-size: 13px;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+
+@media (max-width: 650px) {
+
+    .room-page {
+
+        padding:
+            30px 15px 50px;
+
+    }
+
+
+    .room-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .room-header h1 {
+
+        font-size: 38px;
+
+    }
+
+
+    .room-code-display {
+
+        width: 100%;
+
+    }
+
+
+    .music-area {
+
+        min-height: 390px;
+
+    }
+
+}
+/* =====================================================
+   BETWEEN US — MUSIC PLAYER
+===================================================== */
+
+
+.music-area {
+
+    display: block;
+
+    min-height: auto;
+
+    padding: 35px;
+
+}
+
+
+/* =====================================================
+   MUSIC INPUT
+===================================================== */
+
+
+.music-input-section {
+
+    max-width: 760px;
+
+    margin: 0 auto 30px;
+
+    text-align: center;
+
+}
+
+
+.music-eyebrow {
+
+    margin: 0 0 8px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    letter-spacing: 2.5px;
+
+    color: var(--cream-muted);
+
+}
+
+
+.music-input-section h2 {
+
+    margin: 0 0 8px;
+
+    font-size: 30px;
+
+    font-weight: 400;
+
+}
+
+
+.music-description {
+
+    margin: 0 0 20px;
+
+    color: var(--cream-muted);
+
+    font-size: 14px;
+
+}
+
+
+.youtube-input-row {
+
+    display: flex;
+
+    gap: 10px;
+
+}
+
+
+.youtube-input {
+
+    flex: 1;
+
+    min-width: 0;
+
+    height: 52px;
+
+    padding: 0 18px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    outline: none;
+
+    background: rgba(20, 14, 13, 0.72);
+
+    color: var(--cream);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+}
+
+
+.youtube-input::placeholder {
+
+    color: var(--cream-muted);
+
+    opacity: 0.7;
+
+}
+
+
+.youtube-input:focus {
+
+    border-color: var(--gold);
+
+}
+
+
+.youtube-load-button {
+
+    height: 52px;
+
+    padding: 0 28px;
+
+    border: 0;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    background: var(--gold);
+
+    color: #241714;
+
+    font-weight: 600;
+
+    font-family: inherit;
+
+}
+
+
+.youtube-load-button:hover {
+
+    transform: translateY(-1px);
+
+}
+
+
+.youtube-error {
+
+    min-height: 18px;
+
+    margin: 10px 0 0;
+
+    color: #d99a9a;
+
+    font-size: 13px;
+
+}
+
+
+/* =====================================================
+   YOUTUBE PLAYER
+===================================================== */
+
+
+.youtube-player-wrapper {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    aspect-ratio: 16 / 9;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+
+    border-radius: 22px;
+
+    background: #0e0b0a;
+
+}
+
+
+.youtube-player {
+
+    width: 100%;
+
+    height: 100%;
+
+}
+
+
+.youtube-player iframe {
+
+    width: 100% !important;
+
+    height: 100% !important;
+
+    border: 0;
+
+}
+
+
+.player-placeholder {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    padding: 30px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(107, 48, 56, 0.22),
+            rgba(15, 11, 10, 0.96)
+        );
+
+}
+
+
+.player-placeholder-icon {
+
+    width: 76px;
+
+    height: 76px;
+
+    display: grid;
+
+    place-items: center;
+
+    margin-bottom: 18px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 50%;
+
+    color: var(--gold);
+
+    font-size: 32px;
+
+}
+
+
+.player-placeholder h3 {
+
+    margin: 0 0 8px;
+
+    font-size: 22px;
+
+    font-weight: 400;
+
+}
+
+
+.player-placeholder p {
+
+    max-width: 390px;
+
+    margin: 0;
+
+    color: var(--cream-muted);
+
+    font-size: 13px;
+
+}
+
+
+/* =====================================================
+   NOW PLAYING
+===================================================== */
+
+
+.now-playing {
+
+    max-width: 900px;
+
+    margin: 20px auto 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 16px 18px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    background: rgba(20, 14, 13, 0.48);
+
+}
+
+
+.now-playing-label {
+
+    margin: 0 0 5px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    color: var(--cream-muted);
+
+}
+
+
+.now-playing h3 {
+
+    margin: 0;
+
+    font-size: 17px;
+
+    font-weight: 400;
+
+}
+
+
+.playlist-indicator {
+
+    flex-shrink: 0;
+
+    padding: 7px 11px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 20px;
+
+    color: var(--cream-muted);
+
+    font-size: 11px;
+
+}
+
+
+/* =====================================================
+   CONTROLS
+===================================================== */
+
+
+.player-controls {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin: 22px 0 12px;
+
+}
+
+
+.player-control {
+
+    width: 48px;
+
+    height: 48px;
+
+    display: grid;
+
+    place-items: center;
+
+    border: 1px solid var(--border);
+
+    border-radius: 50%;
+
+    background: rgba(20, 14, 13, 0.7);
+
+    color: var(--cream);
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+}
+
+
+.player-control:hover:not(:disabled) {
+
+    border-color: var(--gold);
+
+    color: var(--gold);
+
+}
+
+
+.player-control:disabled {
+
+    opacity: 0.35;
+
+    cursor: not-allowed;
+
+}
+
+
+.player-control-main {
+
+    width: 60px;
+
+    height: 60px;
+
+    background: var(--gold);
+
+    color: #241714;
+
+    border-color: var(--gold);
+
+    font-size: 22px;
+
+}
+
+
+.player-control-main:hover:not(:disabled) {
+
+    color: #241714;
+
+}
+
+
+/* =====================================================
+   TIME + SEEK
+===================================================== */
+
+
+.time-row {
+
+    max-width: 900px;
+
+    margin: 0 auto 7px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: var(--cream-muted);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+}
+
+
+.seek-bar {
+
+    display: block;
+
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    accent-color: var(--gold);
+
+    cursor: pointer;
+
+}
+
+
+.seek-bar:disabled {
+
+    opacity: 0.35;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =====================================================
+   QUEUE
+===================================================== */
+
+
+.queue-section {
+
+    max-width: 900px;
+
+    margin: 28px auto 0;
+
+    border-top: 1px solid var(--border);
+
+    padding-top: 20px;
+
+}
+
+
+.queue-heading {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: var(--cream-muted);
+
+}
+
+
+.queue-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+}
+
+
+.queue-empty {
+
+    padding: 14px;
+
+    border: 1px dashed var(--border);
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    color: var(--cream-muted);
+
+    font-size: 12px;
+
+}
+
+
+.queue-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 11px 13px;
+
+    border: 1px solid transparent;
+
+    border-radius: 12px;
+
+    background: rgba(20, 14, 13, 0.38);
+
+}
+
+
+.queue-item.active {
+
+    border-color: var(--border);
+
+    background: rgba(107, 48, 56, 0.18);
+
+}
+
+
+.queue-number {
+
+    width: 25px;
+
+    color: var(--cream-muted);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+}
+
+
+.queue-title {
+
+    flex: 1;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    color: var(--cream);
+
+    font-size: 13px;
+
+}
+
+
+/* =====================================================
+   REACTION
+===================================================== */
+
+
+.reaction-section {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 13px;
+
+    margin-top: 30px;
+
+}
+
+
+.reaction-section p {
+
+    margin: 0;
+
+    color: var(--cream-muted);
+
+    font-size: 12px;
+
+}
+
+
+.heart-button {
+
+    width: 46px;
+
+    height: 46px;
+
+    display: grid;
+
+    place-items: center;
+
+    border: 1px solid var(--border);
+
+    border-radius: 50%;
+
+    background: rgba(20, 14, 13, 0.7);
+
+    color: var(--cream);
+
+    cursor: pointer;
+
+    font-size: 22px;
+
+}
+
+
+.heart-button:hover {
+
+    border-color: var(--gold);
+
+    color: var(--gold);
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+
+@media (max-width: 650px) {
+
+    .music-area {
+
+        padding: 22px 16px;
+
+    }
+
+
+    .music-input-section h2 {
+
+        font-size: 25px;
+
+    }
+
+
+    .youtube-input-row {
+
+        flex-direction: column;
+
+    }
+
+
+    .youtube-load-button {
+
+        width: 100%;
+
+    }
+
+
+    .now-playing {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .playlist-indicator {
+
+        align-self: flex-start;
+
+    }
+
+
+    .player-controls {
+
+        gap: 13px;
+
+    }
+
+}
+/* =====================================================
+   BETWEEN US — MUSIC FIRST PLAYER
+===================================================== */
+
+
+.music-area {
+
+    display: block;
+
+    min-height: auto;
+
+    padding: 38px 35px;
+
+}
+
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+
+.music-input-section {
+
+    max-width: 760px;
+
+    margin: 0 auto 32px;
+
+    text-align: center;
+
+}
+
+
+.music-eyebrow {
+
+    margin: 0 0 8px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    letter-spacing: 2.5px;
+
+    color: var(--cream-muted);
+
+}
+
+
+.music-input-section h2 {
+
+    margin: 0 0 8px;
+
+    font-size: 31px;
+
+    font-weight: 400;
+
+}
+
+
+.music-description {
+
+    margin: 0 0 21px;
+
+    color: var(--cream-muted);
+
+    font-size: 14px;
+
+}
+
+
+.youtube-input-row {
+
+    display: flex;
+
+    gap: 10px;
+
+}
+
+
+.youtube-input {
+
+    flex: 1;
+
+    min-width: 0;
+
+    height: 52px;
+
+    padding: 0 18px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    outline: none;
+
+    background: rgba(20, 14, 13, 0.72);
+
+    color: var(--cream);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+}
+
+
+.youtube-input::placeholder {
+
+    color: var(--cream-muted);
+
+    opacity: .72;
+
+}
+
+
+.youtube-input:focus {
+
+    border-color: var(--gold);
+
+}
+
+
+.youtube-load-button {
+
+    height: 52px;
+
+    padding: 0 29px;
+
+    border: 0;
+
+    border-radius: 14px;
+
+    background: var(--gold);
+
+    color: #241714;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-weight: 600;
+
+}
+
+
+.youtube-error {
+
+    min-height: 18px;
+
+    margin: 10px 0 0;
+
+    color: #d99a9a;
+
+    font-size: 13px;
+
+}
+
+
+/* =====================================================
+   MUSIC PLAYER CARD
+===================================================== */
+
+
+.music-player-card {
+
+    width: 100%;
+
+    max-width: 560px;
+
+    margin: 0 auto;
+
+    padding: 32px 30px 28px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(55, 38, 31, .82),
+            rgba(27, 19, 17, .92)
+        );
+
+    box-shadow:
+        0 30px 80px
+        rgba(0,0,0,.24);
+
+    text-align: center;
+
+}
+
+
+/* =====================================================
+   ALBUM ART
+===================================================== */
+
+
+.album-art-wrapper {
+
+    position: relative;
+
+    width: min(320px, 78vw);
+
+    aspect-ratio: 1;
+
+    margin: 0 auto 25px;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 45px
+        rgba(0,0,0,.35);
+
+}
+
+
+.album-art {
+
+    display: none;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.album-art-placeholder {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: grid;
+
+    place-items: center;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            rgba(183,143,91,.22),
+            transparent 35%
+        ),
+        linear-gradient(
+            145deg,
+            #4a3028,
+            #211615
+        );
+
+}
+
+
+.album-art-placeholder span {
+
+    width: 86px;
+
+    height: 86px;
+
+    display: grid;
+
+    place-items: center;
+
+    border: 1px solid var(--border);
+
+    border-radius: 50%;
+
+    color: var(--gold);
+
+    font-size: 36px;
+
+}
+
+
+/* =====================================================
+   SONG INFORMATION
+===================================================== */
+
+
+.song-information {
+
+    margin-bottom: 22px;
+
+}
+
+
+.now-playing-label {
+
+    margin: 0 0 7px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 2.2px;
+
+    color: var(--cream-muted);
+
+}
+
+
+.song-information h2 {
+
+    margin: 0 0 5px;
+
+    font-size: 23px;
+
+    font-weight: 400;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+}
+
+
+.song-information p {
+
+    margin: 0;
+
+    color: var(--cream-muted);
+
+    font-size: 13px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+}
+
+
+/* =====================================================
+   HIDDEN YOUTUBE ENGINE
+===================================================== */
+
+
+.youtube-engine {
+
+    position: fixed;
+
+    width: 1px;
+
+    height: 1px;
+
+    left: -9999px;
+
+    top: -9999px;
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+}
+
+
+.youtube-engine iframe {
+
+    width: 1px !important;
+
+    height: 1px !important;
+
+}
+
+
+/* =====================================================
+   TIME
+===================================================== */
+
+
+.time-row {
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin: 0 auto 7px;
+
+    color: var(--cream-muted);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+}
+
+
+/* =====================================================
+   SEEK
+===================================================== */
+
+
+.seek-bar {
+
+    display: block;
+
+    width: 100%;
+
+    margin: 0 auto;
+
+    accent-color: var(--gold);
+
+    cursor: pointer;
+
+}
+
+
+.seek-bar:disabled {
+
+    opacity: .35;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =====================================================
+   CONTROLS
+===================================================== */
+
+
+.player-controls {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin: 23px 0 12px;
+
+}
+
+
+.player-control {
+
+    width: 46px;
+
+    height: 46px;
+
+    display: grid;
+
+    place-items: center;
+
+    border: 1px solid var(--border);
+
+    border-radius: 50%;
+
+    background: rgba(20,14,13,.7);
+
+    color: var(--cream);
+
+    cursor: pointer;
+
+    font-size: 17px;
+
+}
+
+
+.player-control:hover:not(:disabled) {
+
+    border-color: var(--gold);
+
+    color: var(--gold);
+
+}
+
+
+.player-control:disabled {
+
+    opacity: .3;
+
+    cursor: not-allowed;
+
+}
+
+
+.player-control-main {
+
+    width: 62px;
+
+    height: 62px;
+
+    border-color: var(--gold);
+
+    background: var(--gold);
+
+    color: #241714;
+
+    font-size: 21px;
+
+}
+
+
+.player-control-main:hover:not(:disabled) {
+
+    color: #241714;
+
+}
+
+
+/* =====================================================
+   PLAYLIST TYPE
+===================================================== */
+
+
+.playlist-type {
+
+    display: flex;
+
+    justify-content: center;
+
+}
+
+
+.playlist-type span {
+
+    padding: 6px 12px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 20px;
+
+    color: var(--cream-muted);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+
+}
+
+
+/* =====================================================
+   QUEUE
+===================================================== */
+
+
+.queue-section {
+
+    max-width: 700px;
+
+    margin: 32px auto 0;
+
+    padding-top: 22px;
+
+    border-top: 1px solid var(--border);
+
+}
+
+
+.queue-heading {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: var(--cream-muted);
+
+}
+
+
+.queue-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+}
+
+
+.queue-empty {
+
+    padding: 15px;
+
+    border: 1px dashed var(--border);
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    color: var(--cream-muted);
+
+    font-size: 12px;
+
+}
+
+
+.queue-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 11px 14px;
+
+    border: 1px solid transparent;
+
+    border-radius: 12px;
+
+    background: rgba(20,14,13,.35);
+
+}
+
+
+.queue-item.active {
+
+    border-color: var(--border);
+
+    background: rgba(107,48,56,.18);
+
+}
+
+
+.queue-number {
+
+    width: 25px;
+
+    color: var(--cream-muted);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+}
+
+
+.queue-title {
+
+    flex: 1;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    text-align: left;
+
+    color: var(--cream);
+
+    font-size: 13px;
+
+}
+
+
+/* =====================================================
+   HEART
+===================================================== */
+
+
+.reaction-section {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 13px;
+
+    margin-top: 31px;
+
+}
+
+
+.reaction-section p {
+
+    margin: 0;
+
+    color: var(--cream-muted);
+
+    font-size: 12px;
+
+}
+
+
+.heart-button {
+
+    width: 47px;
+
+    height: 47px;
+
+    display: grid;
+
+    place-items: center;
+
+    border: 1px solid var(--border);
+
+    border-radius: 50%;
+
+    background: rgba(20,14,13,.7);
+
+    color: var(--cream);
+
+    cursor: pointer;
+
+    font-size: 22px;
+
+}
+
+
+.heart-button:hover {
+
+    border-color: var(--gold);
+
+    color: var(--gold);
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+
+@media (max-width: 650px) {
+
+    .music-area {
+
+        padding: 28px 15px;
+
+    }
+
+
+    .music-input-section h2 {
+
+        font-size: 25px;
+
+    }
+
+
+    .youtube-input-row {
+
+        flex-direction: column;
+
+    }
+
+
+    .youtube-load-button {
+
+        width: 100%;
+
+    }
+
+
+    .music-player-card {
+
+        padding: 25px 18px;
+
+    }
+
+
+    .album-art-wrapper {
+
+        width: min(280px, 78vw);
+
+    }
+
+
+    .song-information h2 {
+
+        font-size: 20px;
+
+    }
+
+
+    .player-controls {
+
+        gap: 14px;
+
+    }
+
+}
+/* =====================================================
+   QUEUE THUMBNAILS — ADDITION ONLY
+   Keeps the original Between Us design intact.
+===================================================== */
+
+.queue-item {
+    cursor: pointer;
+}
+
+.queue-thumb {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: rgba(20, 14, 13, 0.55);
+    border: 1px solid rgba(198, 166, 107, 0.12);
+}
+
+.queue-thumb-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.queue-thumb-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: var(--gold);
+    font-size: 17px;
+}
+
+@media (max-width: 650px) {
+    .queue-thumb {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+    }
+}

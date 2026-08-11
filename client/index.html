@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Between Us — Every Song Is Ours</title>
+
+    <meta
+        name="description"
+        content="Between Us — listen to the same song together, even when you're apart."
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Socket.IO client -->
+    <script src="/socket.io/socket.io.js"></script>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <header class="navbar">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            Between Us <span>♡</span>
+        </a>
+
+
+        <a
+            href="how-it-works.html"
+            class="nav-link"
+        >
+            How it works
+        </a>
+
+    </header>
+
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <main class="hero">
+
+        <div class="hero-content">
+
+            <p class="eyebrow">
+                LISTEN TOGETHER, EVEN APART
+            </p>
+
+
+            <h1>
+
+                Between Us,
+
+                <span>
+                    every song is ours.
+                </span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                A private little room for two people
+                to listen to the same song,
+                at the same moment —
+                no matter the distance.
+
+            </p>
+
+
+
+            <!-- BUTTONS -->
+
+            <div class="hero-buttons">
+
+                <a
+                    href="create-room.html"
+                    class="btn btn-primary"
+                >
+                    Create a Room
+                </a>
+
+
+                <a
+                    href="join-room.html"
+                    class="btn btn-secondary"
+                >
+                    Join a Room
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             MUSIC VISUAL
+        ========================== -->
+
+        <div class="music-decoration">
+
+            <div class="vinyl">
+
+                <div class="vinyl-center">
+                    ♫
+                </div>
+
+            </div>
+
+
+            <div class="music-glow"></div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="home-footer">
+
+        <span>
+            Made for two.
+        </span>
+
+
+        <span class="footer-dot">
+            •
+        </span>
+
+
+        <span>
+            Built for the distance between.
+        </span>
+
+
+        <span class="footer-heart">
+            ♡
+        </span>
+
+    </footer>
+
+
+
+    <!-- Socket.IO must load before app.js -->
+    <script src="app.js"></script>
+
+</body>
+
+</html>

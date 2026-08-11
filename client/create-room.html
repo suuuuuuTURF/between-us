@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create a Room — Between Us</title>
+
+    <meta
+        name="description"
+        content="Create a private listening room for two people on Between Us."
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Socket.IO client -->
+    <script src="/socket.io/socket.io.js"></script>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <header class="navbar">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            Between Us <span>♡</span>
+        </a>
+
+
+        <a
+            href="how-it-works.html"
+            class="nav-link"
+        >
+            How it works
+        </a>
+
+    </header>
+
+
+
+    <!-- =========================
+         CREATE ROOM
+    ========================== -->
+
+    <main class="create-page">
+
+        <section class="create-card">
+
+
+            <!-- HEADING -->
+
+            <div class="create-heading">
+
+                <p class="eyebrow">
+                    YOUR LITTLE ROOM
+                </p>
+
+
+                <h1>
+
+                    Create a
+
+                    <span>
+                        room.
+                    </span>
+
+                </h1>
+
+
+                <p>
+                    Give your room a name
+                    and tell us who you are.
+                </p>
+
+            </div>
+
+
+
+            <!-- =========================
+                 CREATE ROOM FORM
+            ========================== -->
+
+            <form
+                id="createRoomForm"
+                class="room-form"
+            >
+
+
+                <!-- YOUR NAME -->
+
+                <div class="form-group">
+
+                    <label for="userName">
+                        Your name
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="userName"
+                        name="userName"
+                        placeholder="e.g. Shubham"
+                        autocomplete="name"
+                        maxlength="30"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- ROOM NAME -->
+
+                <div class="form-group">
+
+                    <label for="roomName">
+                        Room name
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="roomName"
+                        name="roomName"
+                        placeholder="e.g. Our Little Room"
+                        maxlength="40"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- CREATE BUTTON -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary create-button"
+                >
+                    Create Room
+                </button>
+
+
+            </form>
+
+
+
+            <!-- CONNECTION STATUS -->
+
+            <p
+                id="connectionStatus"
+                class="form-status"
+            >
+                Connecting...
+            </p>
+
+
+
+            <!-- BACK -->
+
+            <a
+                href="index.html"
+                class="back-link"
+            >
+                ← Back home
+            </a>
+
+
+        </section>
+
+    </main>
+
+
+
+    <!-- APP -->
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

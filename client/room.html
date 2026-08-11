@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Our Room — Between Us</title>
+
+    <meta
+        name="description"
+        content="A private listening room for two."
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <a
+        href="index.html"
+        class="logo"
+    >
+        Between Us <span>♡</span>
+    </a>
+
+
+    <a
+        href="how-it-works.html"
+        class="nav-link"
+    >
+        How it works
+    </a>
+
+</header>
+
+
+
+<main class="room-page">
+
+    <section class="room-container">
+
+
+        <!-- ROOM HEADER -->
+
+        <div class="room-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    YOUR LITTLE ROOM
+                </p>
+
+
+                <h1 id="roomTitle">
+                    Our Little Room
+                </h1>
+
+            </div>
+
+
+            <div class="room-code-display">
+
+                <span>
+                    ROOM CODE
+                </span>
+
+
+                <strong id="currentRoomCode">
+                    ------
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PEOPLE -->
+
+        <div class="people-card">
+
+            <div class="people-heading">
+
+                <span>
+                    TOGETHER
+                </span>
+
+
+                <span
+                    id="roomStatus"
+                    class="room-status"
+                >
+                    Connecting...
+                </span>
+
+            </div>
+
+
+            <div
+                id="peopleList"
+                class="people-list"
+            ></div>
+
+        </div>
+
+
+
+        <!-- MUSIC -->
+
+        <section class="music-area">
+
+
+            <!-- LINK INPUT -->
+
+            <div class="music-input-section">
+
+                <p class="music-eyebrow">
+                    OUR SOUNDTRACK
+                </p>
+
+
+                <h2>
+                    Put a song between us.
+                </h2>
+
+
+                <p class="music-description">
+                    Paste a YouTube song or playlist
+                    and listen together.
+                </p>
+
+
+                <div class="youtube-input-row">
+
+                    <input
+                        type="url"
+                        id="youtubeUrl"
+                        class="youtube-input"
+                        placeholder="Paste a YouTube song or playlist link..."
+                        autocomplete="off"
+                    >
+
+
+                    <button
+                        type="button"
+                        id="loadYoutubeButton"
+                        class="youtube-load-button"
+                    >
+                        Play
+                    </button>
+
+                </div>
+
+
+                <p
+                    id="youtubeError"
+                    class="youtube-error"
+                ></p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MUSIC PLAYER
+            ================================================== -->
+
+            <div class="music-player-card">
+
+
+                <!-- ALBUM ART -->
+
+                <div class="album-art-wrapper">
+
+                    <img
+                        id="albumArt"
+                        class="album-art"
+                        src=""
+                        alt="Album artwork"
+                    >
+
+
+                    <div
+                        id="albumArtPlaceholder"
+                        class="album-art-placeholder"
+                    >
+
+                        <span>
+                            ♫
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SONG INFORMATION -->
+
+                <div class="song-information">
+
+                    <p class="now-playing-label">
+                        NOW PLAYING
+                    </p>
+
+
+                    <h2 id="currentSongTitle">
+                        Nothing playing
+                    </h2>
+
+
+                    <p id="currentSongArtist">
+                        Your soundtrack is waiting.
+                    </p>
+
+                </div>
+
+
+
+                <!-- HIDDEN YOUTUBE PLAYER -->
+
+                <div
+                    id="youtubePlayerWrapper"
+                    class="youtube-engine"
+                >
+
+                    <div
+                        id="youtubePlayer"
+                    ></div>
+
+                </div>
+
+
+
+                <!-- TIME -->
+
+                <div class="time-row">
+
+                    <span id="currentTime">
+                        0:00
+                    </span>
+
+
+                    <span id="duration">
+                        0:00
+                    </span>
+
+                </div>
+
+
+
+                <!-- SEEK -->
+
+                <input
+                    type="range"
+                    id="seekBar"
+                    class="seek-bar"
+                    min="0"
+                    max="100"
+                    value="0"
+                    step="0.1"
+                    disabled
+                >
+
+
+
+                <!-- CONTROLS -->
+
+                <div class="player-controls">
+
+                    <button
+                        type="button"
+                        id="previousButton"
+                        class="player-control"
+                        aria-label="Previous song"
+                        title="Previous"
+                        disabled
+                    >
+                        ⏮
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="playPauseButton"
+                        class="player-control player-control-main"
+                        aria-label="Play"
+                        title="Play"
+                        disabled
+                    >
+                        ▶
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="nextButton"
+                        class="player-control"
+                        aria-label="Next song"
+                        title="Next"
+                        disabled
+                    >
+                        ⏭
+                    </button>
+
+                </div>
+
+
+
+                <!-- PLAYLIST TYPE -->
+
+                <div class="playlist-type">
+
+                    <span id="playlistIndicator">
+                        Single song
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- QUEUE -->
+
+            <div class="queue-section">
+
+                <div class="queue-heading">
+
+                    <span>
+                        QUEUE
+                    </span>
+
+
+                    <span id="queueCount">
+                        0 songs
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="queueList"
+                    class="queue-list"
+                >
+
+                    <div class="queue-empty">
+                        Your playlist will appear here.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- REACTION -->
+
+            <div class="reaction-section">
+
+                <p>
+                    Send something without saying anything.
+                </p>
+
+
+                <button
+                    type="button"
+                    id="heartButton"
+                    class="heart-button"
+                    aria-label="Send a heart"
+                    title="Send a heart"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+
+        <div
+            id="roomMessage"
+            class="room-message"
+        ></div>
+
+
+    </section>
+
+</main>
+
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
