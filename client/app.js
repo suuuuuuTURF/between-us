@@ -619,6 +619,89 @@ function initializeRoom() {
 
 
 // ======================================================
+// LEAVE ROOM
+// ======================================================
+
+const leaveRoomButton =
+    document.getElementById("leaveRoomButton");
+
+
+if (leaveRoomButton) {
+
+    leaveRoomButton.addEventListener(
+        "click",
+        () => {
+
+            const confirmed =
+                window.confirm(
+                    "Are you sure you want to leave this room?"
+                );
+
+            if (!confirmed) {
+                return;
+            }
+
+            const roomCode =
+                roomCodeForSync ||
+                new URLSearchParams(
+                    window.location.search
+                ).get("code");
+
+            if (socket && roomCode) {
+
+                socket.emit(
+                    "leave-room",
+                    {
+                        roomCode
+                    }
+                );
+
+            }
+
+            // Stop local playback immediately.
+            try {
+
+                if (player && playerReady) {
+                    player.stopVideo();
+                }
+
+            } catch (error) {
+
+                console.warn(
+                    "Could not stop player:",
+                    error
+                );
+
+            }
+
+            // Stop timers.
+            stopProgressTimer();
+            stopPlaybackHeartbeat();
+            stopMetadataRefresh();
+
+            // Clear this user's room session.
+            localStorage.removeItem(
+                "betweenUsRoomCode"
+            );
+
+            localStorage.removeItem(
+                "betweenUsRoomName"
+            );
+
+            localStorage.removeItem(
+                "betweenUsUserName"
+            );
+
+            // Return to home.
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+}
+
+// ======================================================
 // ROOM RESTORED
 // ======================================================
 

@@ -802,6 +802,104 @@ io.on("connection", (socket) => {
 
 
     // ==================================================
+    // LEAVE ROOM
+    // ==================================================
+
+    socket.on("leave-room", (data) => {
+
+        const roomCode =
+            data?.roomCode
+                ?.trim()
+                .toUpperCase();
+
+        if (!roomCode) {
+            return;
+        }
+
+        const room =
+            rooms.get(roomCode);
+
+        if (!room) {
+            return;
+        }
+
+        // Make sure this socket actually belongs
+        // to the requested room.
+        if (
+            socket.data.roomCode !==
+            roomCode
+        ) {
+            return;
+        }
+
+        const userName =
+            socket.data.userName;
+
+        // Remove only this user.
+        room.users =
+            room.users.filter(
+                user =>
+                    user.socketId !==
+                    socket.id
+            );
+
+        // Tell the remaining person.
+        socket
+            .to(roomCode)
+            .emit(
+                "user-left",
+                {
+                    userName:
+                        userName,
+
+                    users:
+                        room.users.map(
+                            user =>
+                                user.name
+                        )
+                }
+            );
+
+        // Leave the Socket.IO room.
+        socket.leave(roomCode);
+
+        // Clear this socket's room data.
+        socket.data.roomCode = null;
+        socket.data.userName = null;
+
+        console.log("");
+        console.log(
+            "================================="
+        );
+        console.log(
+            "USER LEFT ROOM"
+        );
+        console.log(
+            "Room:",
+            roomCode
+        );
+        console.log(
+            "User:",
+            userName
+        );
+        console.log(
+            "Remaining users:",
+            room.users
+        );
+        console.log(
+            "================================="
+        );
+
+        /*
+         * Do NOT delete the room here.
+         *
+         * The room and its playlist/playback state
+         * remain available for the remaining user.
+         */
+    });
+
+
+    // ==================================================
     // DISCONNECT
     // ==================================================
 
@@ -898,16 +996,3 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, "0.0.0.0", () => {
     console.log(`Between Us is running on port ${PORT}`);
 });
-
-server.listen(
-    PORT,
-    () => {
-
-        console.log("");
-        console.log(
-            `Between Us is running at http://localhost:${PORT}`
-        );
-        console.log("");
-
-    }
-);
