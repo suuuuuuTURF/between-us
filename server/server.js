@@ -66,6 +66,45 @@ function generateRoomCode() {
 
 
 // ======================================================
+// PLAYBACK STATE HELPERS
+// ======================================================
+
+function getLivePlaybackState(room) {
+
+    const state = room?.playbackState;
+
+    if (!state) {
+        return null;
+    }
+
+    const result = { ...state };
+
+    if (result.isPlaying) {
+        const elapsed =
+            (Date.now() - (result.updatedAt || Date.now())) / 1000;
+
+        result.currentTime =
+            Math.max(0, Number(result.currentTime || 0) + elapsed);
+    }
+
+    return result;
+}
+
+
+function savePlaybackState(room, patch = {}) {
+
+    room.playbackState = {
+        ...room.playbackState,
+        ...patch,
+        currentTime: Math.max(0, Number(patch.currentTime ?? room.playbackState.currentTime ?? 0)),
+        updatedAt: Date.now()
+    };
+
+    return getLivePlaybackState(room);
+}
+
+
+// ======================================================
 // SOCKET.IO
 // ======================================================
 
@@ -117,15 +156,6 @@ io.on("connection", (socket) => {
 
             name: roomName,
 
-            playlist: [],
-
-            playback: {
-                currentIndex: 0,
-                isPlaying: false,
-                currentTime: 0,
-                updatedAt: Date.now()
-            },
-
             users: [
 
                 {
@@ -137,7 +167,17 @@ io.on("connection", (socket) => {
 
                 }
 
-            ]
+            ],
+
+            playbackState: {
+                mediaType: null,
+                videoId: null,
+                playlistId: null,
+                playlistIndex: 0,
+                isPlaying: false,
+                currentTime: 0,
+                updatedAt: Date.now()
+            }
 
         };
 
@@ -330,20 +370,8 @@ io.on("connection", (socket) => {
                             user.name
                     ),
 
-                playlist:
-                    room.playlist.slice(),
-
-                currentIndex:
-                    room.playback.currentIndex,
-
-                isPlaying:
-                    room.playback.isPlaying,
-
-                currentTime:
-                    room.playback.currentTime,
-
-                updatedAt:
-                    room.playback.updatedAt
+                playbackState:
+                    getLivePlaybackState(room)
 
             }
         );
@@ -540,20 +568,8 @@ io.on("connection", (socket) => {
                             user.name
                     ),
 
-                playlist:
-                    room.playlist.slice(),
-
-                currentIndex:
-                    room.playback.currentIndex,
-
-                isPlaying:
-                    room.playback.isPlaying,
-
-                currentTime:
-                    room.playback.currentTime,
-
-                updatedAt:
-                    room.playback.updatedAt
+                playbackState:
+                    getLivePlaybackState(room)
 
             }
         );
@@ -585,218 +601,90 @@ io.on("connection", (socket) => {
 
 
     // ==================================================
-    // SHARED PLAYLIST
+    // MEDIA LOAD / PLAYBACK SYNC
     // ==================================================
 
-    socket.on("add-to-shared-playlist", (data) => {
+    socket.on("media-load", (data) => {
 
-        const roomCode =
-            data?.roomCode?.trim().toUpperCase();
-
+        const roomCode = socket.data.roomCode;
         const room = rooms.get(roomCode);
 
-        if (!room || socket.data.roomCode !== roomCode) {
+        if (!room || !data?.mediaType) {
             return;
         }
 
-        const incoming = Array.isArray(data?.videoIds)
-            ? data.videoIds
-            : [];
+        const state = savePlaybackState(room, {
+            mediaType: data.mediaType,
+            videoId: data.mediaType === "video" ? data.videoId : null,
+            playlistId: data.mediaType === "playlist" ? data.playlistId : null,
+            playlistIndex: Number.isInteger(Number(data.playlistIndex))
+                ? Number(data.playlistIndex)
+                : 0,
+            isPlaying: data.isPlaying !== false,
+            currentTime: Number(data.time) || 0
+        });
 
-        const valid = incoming.filter(
-            id => typeof id === "string" && /^[A-Za-z0-9_-]{11}$/.test(id)
-        );
+        console.log("MEDIA LOAD SYNC", roomCode, state);
 
-        const previousLength = room.playlist.length;
-        const existing = new Set(room.playlist);
-
-        for (const videoId of valid) {
-            if (!existing.has(videoId)) {
-                room.playlist.push(videoId);
-                existing.add(videoId);
-            }
-        }
-
-        if (!room.playlist.length) {
-            return;
-        }
-
-        if (room.playback.currentIndex >= room.playlist.length) {
-            room.playback.currentIndex = 0;
-            room.playback.currentTime = 0;
-        }
-
-        const wasEmptyBefore =
-            previousLength === 0 && room.playlist.length > 0;
-
-        if (wasEmptyBefore) {
-            room.playback.currentIndex = 0;
-            room.playback.currentTime = 0;
-            room.playback.isPlaying = true;
-        }
-
-        room.playback.updatedAt = Date.now();
-
-        io.to(roomCode).emit(
-            "shared-playlist-updated",
-            {
-                playlist: room.playlist.slice(),
-                currentIndex: room.playback.currentIndex,
-                isPlaying: room.playback.isPlaying,
-                currentTime: room.playback.currentTime,
-                updatedAt: room.playback.updatedAt
-            }
-        );
+        socket.to(roomCode).emit("playback-state", state);
 
     });
 
 
-    // ==================================================
-    // SERVER-AUTHORITATIVE PLAYBACK
-    // ==================================================
+    socket.on("playback-action", (data) => {
 
-    socket.on("shared-playback-command", (data) => {
-
-        const roomCode =
-            data?.roomCode?.trim().toUpperCase();
-
+        const roomCode = socket.data.roomCode;
         const room = rooms.get(roomCode);
 
-        if (!room || socket.data.roomCode !== roomCode) {
+        if (!room || !data?.action) {
             return;
         }
 
-        const action = data?.action;
+        const current = room.playbackState || {};
+        const action = data.action;
 
-        if (!room.playlist.length) {
-            return;
+        const patch = {
+            currentTime: Number(data.time) || 0
+        };
+
+        if (data.mediaType) {
+            patch.mediaType = data.mediaType;
         }
 
-        const requestedIndex = Number.isInteger(data?.index)
-            ? data.index
-            : room.playback.currentIndex;
-
-        const safeIndex = Math.max(
-            0,
-            Math.min(requestedIndex, room.playlist.length - 1)
-        );
-
-        if (action === "ended") {
-
-            // Only the client that reports the currently active index
-            // can advance the room. If both browsers report ENDED, the
-            // second report is ignored because the index has already moved.
-            if (safeIndex !== room.playback.currentIndex) {
-                return;
-            }
-
-            if (room.playlist.length === 1) {
-                room.playback.currentIndex = 0;
-                room.playback.currentTime = 0;
-                room.playback.isPlaying = false;
-            } else if (room.playback.currentIndex < room.playlist.length - 1) {
-                room.playback.currentIndex += 1;
-                room.playback.currentTime = 0;
-                room.playback.isPlaying = true;
-            } else {
-                room.playback.currentIndex = 0;
-                room.playback.currentTime = 0;
-                room.playback.isPlaying = false;
-            }
-
-            room.playback.updatedAt = Date.now();
-
-        } else {
-
-            if (action === "index") {
-                room.playback.currentIndex = safeIndex;
-                room.playback.currentTime = 0;
-                room.playback.isPlaying = true;
-            }
-
-            if (action === "play") {
-                const currentTime = Number(data?.currentTime);
-                room.playback.currentIndex = safeIndex;
-                if (Number.isFinite(currentTime)) {
-                    room.playback.currentTime = Math.max(0, currentTime);
-                }
-                room.playback.isPlaying = true;
-            }
-
-            if (action === "pause") {
-                const currentTime = Number(data?.currentTime);
-                room.playback.currentIndex = safeIndex;
-                if (Number.isFinite(currentTime)) {
-                    room.playback.currentTime = Math.max(0, currentTime);
-                }
-                room.playback.isPlaying = false;
-            }
-
-            if (action === "seek") {
-                const currentTime = Number(data?.currentTime);
-                room.playback.currentIndex = safeIndex;
-                if (Number.isFinite(currentTime)) {
-                    room.playback.currentTime = Math.max(0, currentTime);
-                }
-            }
-
-            if (!["index", "play", "pause", "seek"].includes(action)) {
-                return;
-            }
-
-            room.playback.updatedAt = Date.now();
-
+        if (data.videoId !== undefined) {
+            patch.videoId = data.videoId;
         }
 
-        io.to(roomCode).emit(
-            "shared-playback-updated",
-            {
-                playlist: room.playlist.slice(),
-                currentIndex: room.playback.currentIndex,
-                isPlaying: room.playback.isPlaying,
-                currentTime: room.playback.currentTime,
-                updatedAt: room.playback.updatedAt
-            }
-        );
-
-    });
-
-
-    // ==================================================
-    // PLAYBACK HEARTBEAT
-    // ==================================================
-
-    socket.on("shared-playback-heartbeat", (data) => {
-
-        const roomCode =
-            data?.roomCode?.trim().toUpperCase();
-
-        const room = rooms.get(roomCode);
-
-        if (!room || socket.data.roomCode !== roomCode) {
-            return;
+        if (data.playlistId !== undefined) {
+            patch.playlistId = data.playlistId;
         }
 
-        if (!room.playlist.length || !room.playback.isPlaying) {
-            return;
+        if (Number.isInteger(Number(data.playlistIndex))) {
+            patch.playlistIndex = Number(data.playlistIndex);
         }
 
-        const index = Number.isInteger(data?.index)
-            ? data.index
-            : room.playback.currentIndex;
-
-        if (index !== room.playback.currentIndex) {
-            return;
+        if (action === "play") {
+            patch.isPlaying = true;
         }
 
-        const currentTime = Number(data?.currentTime);
-
-        if (!Number.isFinite(currentTime)) {
-            return;
+        if (action === "pause") {
+            patch.isPlaying = false;
         }
 
-        room.playback.currentTime = Math.max(0, currentTime);
-        room.playback.updatedAt = Date.now();
+        if (action === "seek") {
+            patch.isPlaying = current.isPlaying;
+        }
+
+        if (action === "track") {
+            patch.isPlaying = true;
+            patch.currentTime = 0;
+        }
+
+        const state = savePlaybackState(room, patch);
+
+        console.log("PLAYBACK SYNC", roomCode, action, state);
+
+        socket.to(roomCode).emit("playback-state", state);
 
     });
 
@@ -893,11 +781,7 @@ io.on("connection", (socket) => {
 // START SERVER
 // ======================================================
 
-const PORT = process.env.PORT || 3000;
-
-server.listen(PORT, "0.0.0.0", () => {
-    console.log(`Between Us is running on port ${PORT}`);
-});
+const PORT = 3000;
 
 server.listen(
     PORT,

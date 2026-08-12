@@ -29,6 +29,10 @@ let applyingRemotePlayback = false;
 let lastServerPlaybackUpdatedAt = 0;
 let playbackHeartbeatTimer = null;
 
+// Holds the exact server playback position until
+// YouTube confirms that the requested video is ready.
+let pendingPlaybackRestore = null;
+
 let progressTimer = null;
 let metadataTimer = null;
 
@@ -859,7 +863,6 @@ function applySharedPlaylist(
     startTime = 0,
     explicitPlaying = null
 ) {
-
     if (!player || !playerReady) {
         return;
     }
@@ -867,7 +870,10 @@ function applySharedPlaylist(
     const clean = Array.from(
         new Set(
             (Array.isArray(playlist) ? playlist : [])
-                .filter(id => /^[A-Za-z0-9_-]{11}$/.test(id))
+                .filter(
+                    id =>
+                        /^[A-Za-z0-9_-]{11}$/.test(id)
+                )
         )
     );
 
@@ -875,20 +881,45 @@ function applySharedPlaylist(
 
     if (!clean.length) {
         applyingSharedPlaylist = false;
+        applyingRemotePlayback = false;
+        pendingPlaybackRestore = null;
         return;
     }
 
     const safeIndex = Math.max(
         0,
-        Math.min(index, clean.length - 1)
+        Math.min(
+            Number.isInteger(index) ? index : 0,
+            clean.length - 1
+        )
     );
+
+    const targetTime =
+        Number.isFinite(Number(startTime))
+            ? Math.max(0, Number(startTime))
+            : 0;
+
+    const shouldStart =
+        explicitPlaying === true ||
+        (explicitPlaying === null && shouldPlay);
 
     applyingSharedPlaylist = true;
     applyingRemotePlayback = true;
 
-    currentMediaType = clean.length > 1 ? "playlist" : "video";
+    currentMediaType =
+        clean.length > 1
+            ? "playlist"
+            : "video";
+
     currentPlaylistId = null;
     currentVideoId = clean[safeIndex];
+
+    // Wait for YouTube to cue the requested video before seeking.
+    pendingPlaybackRestore = {
+        index: safeIndex,
+        time: targetTime,
+        shouldPlay: shouldStart
+    };
 
     try {
         player.loadPlaylist({
@@ -896,47 +927,78 @@ function applySharedPlaylist(
             index: safeIndex
         });
     } catch (error) {
-        console.error("Could not load shared playlist:", error);
+        console.error(
+            "Could not load shared playlist:",
+            error
+        );
+
         applyingSharedPlaylist = false;
         applyingRemotePlayback = false;
+        pendingPlaybackRestore = null;
+
         return;
     }
 
     setPlaylistIndicator(
-        clean.length > 1 ? "Shared playlist" : "Single song"
+        clean.length > 1
+            ? "Shared playlist"
+            : "Single song"
     );
 
-    updateAlbumArt(clean[safeIndex]);
+    updateAlbumArt(
+        clean[safeIndex]
+    );
+
     updateMusicControls();
 
+    // Fallback in case CUED is delayed.
     setTimeout(() => {
+        if (
+            !pendingPlaybackRestore ||
+            !player ||
+            !playerReady
+        ) {
+            return;
+        }
+
+        const restore =
+            pendingPlaybackRestore;
+
         try {
-            renderQueue();
-            updateNowPlaying();
+            const currentIndex =
+                getCurrentSharedIndex();
 
-            if (Number.isFinite(startTime) && startTime > 0) {
-                player.seekTo(startTime, true);
-            }
+            if (
+                currentIndex ===
+                restore.index
+            ) {
+                if (restore.time > 0) {
+                    player.seekTo(
+                        restore.time,
+                        true
+                    );
+                }
 
-            const shouldStart =
-                explicitPlaying === true ||
-                (explicitPlaying === null && shouldPlay);
+                if (restore.shouldPlay) {
+                    player.playVideo();
+                } else {
+                    player.pauseVideo();
+                }
 
-            if (shouldStart) {
-                player.playVideo();
-            } else {
-                player.pauseVideo();
+                pendingPlaybackRestore = null;
+                applyingSharedPlaylist = false;
+
+                setTimeout(() => {
+                    applyingRemotePlayback = false;
+                }, 500);
             }
         } catch (error) {
-            console.error("Could not finish shared playlist apply:", error);
-        } finally {
-            applyingSharedPlaylist = false;
-            setTimeout(() => {
-                applyingRemotePlayback = false;
-            }, 250);
+            console.error(
+                "Playback restore fallback failed:",
+                error
+            );
         }
-    }, 900);
-
+    }, 1800);
 }
 
 
@@ -1552,6 +1614,60 @@ function onYouTubePlayerStateChange(event) {
 
         updateNowPlaying();
 
+        if (
+            pendingPlaybackRestore &&
+            player &&
+            playerReady
+        ) {
+            const restore =
+                pendingPlaybackRestore;
+
+            try {
+                const currentIndex =
+                    getCurrentSharedIndex();
+
+                if (
+                    currentIndex ===
+                    restore.index
+                ) {
+                    // YouTube has now cued the requested video.
+                    // Restore the exact server-authoritative position.
+                    if (restore.time > 0) {
+                        player.seekTo(
+                            restore.time,
+                            true
+                        );
+                    }
+
+                    if (restore.shouldPlay) {
+                        player.playVideo();
+                    } else {
+                        player.pauseVideo();
+                    }
+
+                    pendingPlaybackRestore = null;
+                    applyingSharedPlaylist = false;
+
+                    setTimeout(() => {
+                        applyingRemotePlayback = false;
+                    }, 500);
+
+                    console.log(
+                        "Playback restored:",
+                        {
+                            index: restore.index,
+                            time: restore.time,
+                            playing: restore.shouldPlay
+                        }
+                    );
+                }
+            } catch (error) {
+                console.error(
+                    "Could not restore authoritative timestamp:",
+                    error
+                );
+            }
+        }
     }
 
     if (
